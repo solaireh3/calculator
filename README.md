@@ -1,5 +1,4 @@
-个人搭建地址，供参考：https://tool.xxxh.de
-
+个人搭建地址，供参考：https://tool.xxxh.de 和 https://tool.xxxh.de
 来大佬美化一下吧，太丑了(Doing...)
 
 # 剩余价值计算器 / Remaining Value Calculator
