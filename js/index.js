@@ -68,5 +68,5 @@ function generateResult() {
     }
 }
 
-fetchExchangeRate();  // 初始化时获取默认币种的汇率
+// fetchExchangeRate();  // 初始化时获取默认币种的汇率
 setDefaultTransactionDate(); // 初始化时设置交易日期
