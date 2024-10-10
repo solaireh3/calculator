@@ -1,3 +1,5 @@
+个人搭建：tool.xxxh.de
+
 # 剩余价值计算器 / Remaining Value Calculator
 
 本项目是一个基于 Web 的剩余价值计算器，用户可以通过输入汇率、金额、周期等信息来计算剩余价值。此项目主要由 HTML、CSS、JavaScript 和 Node.js 构成。
