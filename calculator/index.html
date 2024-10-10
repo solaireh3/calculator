@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>剩余价值计算器 / Remaining Value Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'KaiTi', 'Noto Sans SC', sans-serif; /* 使用楷体 */
+            background-color: #ffffff; /* 白色背景 */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .calculator {
+            background: linear-gradient(135deg, #fbc2eb, #a6c1ee); /* 动态渐变背景 */
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            padding: 15px;
+            border-radius: 0;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            margin-bottom: 20px; /* 增加与结果框的间距 */
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3498db; /* 标题颜色 */
+            margin-bottom: 15px;
+        }
+        h3 {
+            text-align: center;
+            font-size: 1rem; /* 调整为与小标题一致的大小 */
+            color: #000000; /* 标题改为黑色 */
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        label {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px; /* 缩小 padding */
+            margin-bottom: 8px; /* 减少了 margin-bottom */
+            border: 1px solid #ddd;
+            border-radius: 0;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            background-color: #fff;
+            outline: none;
+        }
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .input-group input, .input-group select {
+            width: 48%;
+        }
+        .button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            background: none; /* 去掉背景 */
+            max-width: 550px; /* 表格宽度缩小一点 */
+            width: 100%;
+            margin-top: 10px;
+        }
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .result-table th, .result-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-family: 'KaiTi', serif; /* 使用楷体 */
+        }
+        /* 表格奇数行为浅灰色，偶数行为白色 */
+        .result-table tr:nth-child(odd) {
+            background-color: #f5f5f5; /* 浅灰色 */
+        }
+        .result-table tr:nth-child(even) {
+            background-color: #ffffff; /* 白色 */
+        }
+        .result-value {
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+        .custom-link {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .container {
+            display: flex;
+            flex-direction: column; /* 改为列布局，使得结果框始终在表单下方 */
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h2>剩余价值计算器</h2>
+    <div class="container">
+        <!-- 表单 -->
+        <div class="calculator">
+            <label>参考汇率 (更新时间: <span id="updateDate">0000/00/00</span> | 数据来源:
+                <a href="https://www.exchangerate-api.com" class="custom-link" target="_blank">Exchangerate-API.com</a>)
+            </label>
+            <input type="text" id="exchangeRate" readonly value="0.000">
+            
+            <label>自定汇率</label>
+            <input type="text" id="customRate" value="0.000">
+            
+            <label>续费金额和币种</label>
+            <div class="input-group">
+                <input type="number" id="amount" value=""> <!-- 默认空白 -->
+                <select id="currency" onchange="fetchExchangeRate()">
+                    <option value="AUD">澳币 (AUD)</option>
+                    <option value="CAD">加拿大元 (CAD)</option>
+                    <option value="CNY">人民币 (CNY)</option>
+                    <option value="EUR">欧元 (EUR)</option>
+                    <option value="GBP">英镑 (GBP)</option>
+                    <option value="HKD">港元 (HKD)</option>
+                    <option value="JPY">日元 (JPY)</option>
+                    <option value="KRW">韩元 (KRW)</option>
+                    <option value="SGD">新加坡元 (SGD)</option>
+                    <option value="TWD">新台币 (TWD)</option>
+                    <option value="USD" selected>美元 (USD)</option> <!-- 默认选择美元 -->
+                </select>
+            </div>
+
+            <label>续费周期</label> <!-- 修改标题为续费周期 -->
+            <select id="cycle">
+                <option value="1">月付</option>
+                <option value="3">季付</option>
+                <option value="6">半年付</option>
+                <option value="12" selected>年付</option>
+                <option value="24">两年付</option>
+                <option value="36">三年付</option>
+                <option value="60">五年付</option>
+            </select>
+
+            <div class="input-group">
+                <div style="width: 48%;"> <!-- 保证宽度一致 -->
+                    <label>到期时间</label>
+                    <input type="date" id="expiryDate">
+                </div>
+                <div style="width: 48%;"> <!-- 保证宽度一致 -->
+                    <label>交易日期</label>
+                    <input type="date" id="transactionDate">
+                </div>
+            </div>
+
+            <label>出价金额</label>
+            <input type="number" id="bidAmount" value=""> <!-- 默认空白 -->
+            
+            <button class="button" onclick="generateResult()">计算剩余价值</button>
+        </div>
+
+        <!-- 计算结果表格 -->
+        <div id="calcResult" class="result">
+            <h3>计算结果</h3>
+            <table class="result-table">
+                <tr>
+                    <th>交易日期：</th>
+                    <td id="resultDate">0000-00-00</td>
+                </tr>
+                <tr>
+                    <th>外币汇率：</th>
+                    <td id="resultForeignRate">0.00</td>
+                </tr>
+                <tr>
+                    <th>续费价格：</th>
+                    <td id="resultPrice">0.00 人民币/年</td>
+                </tr>
+                <tr>
+                    <th>剩余天数：</th>
+                    <td><span id="resultDays">0</span> 天 (于 <span id="resultExpiry">0000-00-00</span> 过期)</td>
+                </tr>
+                <tr>
+                    <th>剩余价值：</th>
+                    <td><span id="resultValue" class="result-value">0.000 元</span></td>
+                </tr>
+                <tr>
+                    <th>溢价金额：</th>
+                    <td><span id="premiumValue" class="result-value">0.000 元</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = 'You_ApiKey';
+
+        function fetchExchangeRate() {
+            const currency = document.getElementById('currency').value;
+            fetch(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/${currency}`)
+                .then(response => response.json())
+                .then(data => {
+                    const rate = data.conversion_rates.CNY;
+
+                    // 将时间转换为东八区时间
+                    const utcDate = new Date(data.time_last_update_utc);
+                    const eastEightTime = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000));
+                    const formattedDate = `${eastEightTime.getUTCFullYear()}/${String(eastEightTime.getUTCMonth() + 1).padStart(2, '0')}/${String(eastEightTime.getUTCDate()).padStart(2, '0')}`;
+
+                    document.getElementById('exchangeRate').value = rate;
+                    document.getElementById('customRate').value = rate; // 初始自定汇率跟随API变化
+                    document.getElementById('updateDate').innerText = formattedDate;
+                })
+                .catch(error => {
+                    console.error('Error fetching the exchange rate:', error);
+                });
+        }
+
+        function setDefaultTransactionDate() {
+            const currentDate = new Date();
+            // 将时间转换为东八区时间
+            const eastEightTime = new Date(currentDate.getTime() + (8 * 60 * 60 * 1000));
+            const year = eastEightTime.getUTCFullYear();
+            const month = String(eastEightTime.getUTCMonth() + 1).padStart(2, '0');
+            const day = String(eastEightTime.getUTCDate()).padStart(2, '0');
+            document.getElementById('transactionDate').value = `${year}-${month}-${day}`;
+        }
+
+        function generateResult() {
+            var exchangeRate = document.getElementById('exchangeRate').value;
+            var customRate = document.getElementById('customRate').value;
+            var amount = document.getElementById('amount').value;
+            var cycle = document.getElementById('cycle').value;
+            var expiryDate = document.getElementById('expiryDate').value;
+            var transactionDate = document.getElementById('transactionDate').value;
+            var bidAmount = document.getElementById('bidAmount').value;
+
+            if (customRate && amount && cycle && expiryDate && transactionDate) {
+                var localAmount = (amount * customRate).toFixed(2);
+
+                var currentDate = new Date();
+                var expiry = new Date(expiryDate);
+                var timeDiff = expiry.getTime() - currentDate.getTime();
+                var remainingDays = Math.max(Math.ceil(timeDiff / (1000 * 3600 * 24)), 0); // 剩余天数，不允许负值
+                var remainingValue = (localAmount * remainingDays / 365).toFixed(3);
+
+                var premiumValue = (bidAmount - remainingValue).toFixed(3);
+
+                // 更新页面元素显示结果
+                document.getElementById('resultDate').innerText = transactionDate;
+                document.getElementById('resultForeignRate').innerText = customRate;
+                document.getElementById('resultPrice').innerText = localAmount + " 人民币/年";
+                document.getElementById('resultDays').innerText = remainingDays;
+                document.getElementById('resultExpiry').innerText = expiryDate;
+                document.getElementById('resultValue').innerText = remainingValue + " 元";
+                document.getElementById('premiumValue').innerText = premiumValue + " 元";
+
+                document.getElementById('calcResult').style.display = 'block'; // 显示结果框
+            } else {
+                document.getElementById('calcResult').style.display = 'block';
+                document.getElementById('calcResult').innerText = '请填写所有字段';
+            }
+        }
+
+        fetchExchangeRate();  // 初始化时获取默认币种的汇率
+        setDefaultTransactionDate(); // 初始化时设置交易日期
+    </script>
+</body>
+</html>
