@@ -1,4 +1,6 @@
-个人搭建：tool.xxxh.de
+个人搭建地址，供参考：tool.xxxh.de
+
+来大佬美化一下吧，太丑了
 
 # 剩余价值计算器 / Remaining Value Calculator
 
