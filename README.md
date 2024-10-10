@@ -19,7 +19,6 @@
 
 - Node.js 版本 >= 12
 - 浏览器支持最新的 HTML5 和 JavaScript
-- 一个文本编辑器（推荐使用 VSCode）
 
 ## 安装步骤
 
@@ -28,26 +27,27 @@
    ```bash
    git clone https://github.com/SolaireH3/calculator.git
    cd calculator
+   ```
 2. **安装依赖**
    
    ```bash
    npm install
-
+   ```
    该命令将安装项目所需的所有依赖项。
 
 ## 运行应用程
 
-   1. **安装 PM2**
+1. **安装 PM2**
    首先，在命令行中运行以下命令安装 PM2：
    ```bash
    npm install -g pm2
-
-   2. **使用 PM2 启动应用程序**
+   ```
+2. **使用 PM2 启动应用程序**
    使用 PM2 启动 server.js，使其在后台常驻运行：
    ```bash
    pm2 start server.js --name remaining-value-calculator
-
-   3. **访问应用程序**
+   ```
+3. **访问应用程序**
    打开浏览器，访问以下地址：
 
    http://localhost:3100
