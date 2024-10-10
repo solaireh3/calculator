@@ -70,7 +70,7 @@ calculator/
 ├── index.html       # 主页面文件
 ├── script.js        # 处理页面逻辑的 JavaScript 文件
 └── server.js        # 基于 Node.js 的服务器文件
-
+```
 index.html 包含了页面的布局和样式
 script.js 包含了前端计算逻辑
 server.js 负责运行本地服务器
