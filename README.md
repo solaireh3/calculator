@@ -82,11 +82,11 @@ server.js 负责运行本地服务器
 ## 贡献指南
 
 欢迎任何形式的贡献！如果您发现了问题或有新的建议，请随时提交 Issue 或创建 Pull Request。
-1.Fork 这个仓库
-2.创建一个分支：git checkout -b feature-branch
-3.提交你的更改：git commit -m 'Add some feature'
-4.推送到分支：git push origin feature-branch
-5.创建一个新的 Pull Request
+1. Fork 这个仓库
+2. 创建一个分支：git checkout -b feature-branch
+3. 提交你的更改：git commit -m 'Add some feature'
+4. 推送到分支：git push origin feature-branch
+5. 创建一个新的 Pull Request
 
 ## 许可证信息
 
