@@ -37,22 +37,22 @@
 
 ## 运行应用程
 
-1. **安装 PM2**
-首先，在命令行中运行以下命令安装 PM2：
-```bash
-npm install -g pm2
+   1. **安装 PM2**
+   首先，在命令行中运行以下命令安装 PM2：
+   ```bash
+   npm install -g pm2
 
-2. **使用 PM2 启动应用程序**
-使用 PM2 启动 server.js，使其在后台常驻运行：
-```bash
-pm2 start server.js --name remaining-value-calculator
+   2. **使用 PM2 启动应用程序**
+   使用 PM2 启动 server.js，使其在后台常驻运行：
+   ```bash
+   pm2 start server.js --name remaining-value-calculator
 
-3. **访问应用程序**
-打开浏览器，访问以下地址：
+   3. **访问应用程序**
+   打开浏览器，访问以下地址：
 
-http://localhost:3000
+   http://localhost:3100
 
-应用程序现在应该可以在浏览器中使用了。
+   应用程序现在应该可以在浏览器中使用了。
 
 ## 使用说明
 
