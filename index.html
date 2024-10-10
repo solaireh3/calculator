@@ -14,14 +14,20 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
     <canvas id="canvas"></canvas>
+    <div class="bg"></div>
     <div class="main">
         <h2>剩余价值计算器</h2>
         <!-- 表单 -->
         <div class="calculator card">
-            <label>参考汇率
+            <label class="pc">参考汇率
                 <span class="update-time">(更新时间: <span id="updateDate">0000/00/00</span></span>
                 <!-- <br> -->
-                <span class="update-time">数据来源: <a href="https://www.exchangerate-api.com" class="custom-link" target="_blank">Exchangerate-API.com</a>)</span>
+                <span class="update-source">数据来源: <a href="https://www.exchangerate-api.com" class="custom-link" target="_blank">Exchangerate-API.com</a>)</span>
+            </label>
+            <label class="mobile">参考汇率
+                <span class="update-time">更新时间: <span id="updateDate">0000/00/00</span></span>
+                <br>
+                <span class="update-source">(数据来源: <a href="https://www.exchangerate-api.com" class="custom-link" target="_blank">Exchangerate-API.com</a>)</span>
             </label>
             <input type="text" id="exchangeRate" readonly value="0.000">
             
