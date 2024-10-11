@@ -1,121 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>剩余价值计算器 / Remaining Value Calculator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/index.css">
+    <!-- tomzhao.xyz -->
+    <meta name="author" content="tomzhao.xyz">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/zh.js"></script>
 </head>
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
-    <canvas id="canvas"></canvas>
-    <div class="bg"></div>
-    <div class="main">
-        <h2>剩余价值计算器</h2>
-        <!-- 表单 -->
-        <div class="calculator card">
-            <label class="pc">参考汇率
-                <span class="update-time">(更新时间: <span id="updateDate">0000/00/00</span></span>
-                <!-- <br> -->
-                <span class="update-source">数据来源: <a href="https://www.exchangerate-api.com" class="custom-link" target="_blank">Exchangerate-API.com</a>)</span>
-            </label>
-            <label class="mobile">参考汇率
-                <span class="update-time">更新时间: <span id="updateDate">0000/00/00</span></span>
-                <br>
-                <span class="update-source">(数据来源: <a href="https://www.exchangerate-api.com" class="custom-link" target="_blank">Exchangerate-API.com</a>)</span>
-            </label>
-            <input type="text" id="exchangeRate" readonly value="0.000">
-            
-            <label>自定汇率</label>
-            <input type="text" id="customRate" value="0.000">
-            
-            <label>续费金额和币种</label>
-            <div class="input-group">
-                <input type="number" id="amount" value=""> <!-- 默认空白 -->
-                <select id="currency" onchange="fetchExchangeRate()">
-                    <option value="AUD">澳币 (AUD)</option>
-                    <option value="CAD">加拿大元 (CAD)</option>
-                    <option value="CNY">人民币 (CNY)</option>
-                    <option value="EUR">欧元 (EUR)</option>
-                    <option value="GBP">英镑 (GBP)</option>
-                    <option value="HKD">港元 (HKD)</option>
-                    <option value="JPY">日元 (JPY)</option>
-                    <option value="KRW">韩元 (KRW)</option>
-                    <option value="SGD">新加坡元 (SGD)</option>
-                    <option value="TWD">新台币 (TWD)</option>
-                    <option value="USD" selected>美元 (USD)</option> <!-- 默认选择美元 -->
-                </select>
-            </div>
-
-            <label>续费周期</label> <!-- 修改标题为续费周期 -->
-            <select id="cycle">
-                <option value="1">月付</option>
-                <option value="3">季付</option>
-                <option value="6">半年付</option>
-                <option value="12" selected>年付</option>
-                <option value="24">两年付</option>
-                <option value="36">三年付</option>
-                <option value="60">五年付</option>
-            </select>
-
-            <div class="input-group">
-                <div style="width: 48%;"> <!-- 保证宽度一致 -->
-                    <label>到期时间</label>
-                    <input type="date" class="date-picker" id="expiryDate">
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> 剩余价值计算器</h1>
+        </header>
+        <main>
+            <section class="calculator">
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="exchangeRate"><i class="fas fa-exchange-alt"></i> 参考汇率</label>
+                        <input type="number" id="exchangeRate" readonly>
+                        <span id="updateDate" class="update-time"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="customRate"><i class="fas fa-edit"></i> 自定汇率</label>
+                        <input type="number" id="customRate" step="0.001">
+                    </div>
                 </div>
-                <div style="width: 48%;"> <!-- 保证宽度一致 -->
-                    <label>交易日期</label>
-                    <input type="date" class="date-picker" id="transactionDate">
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="amount"><i class="fas fa-money-bill-wave"></i> 续费金额</label>
+                        <input type="number" id="amount" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="currency"><i class="fas fa-globe"></i> 币种</label>
+                        <select id="currency">
+                            <option value="USD">美元 (USD)</option>
+                            <option value="AUD">澳币 (AUD)</option>
+                            <option value="CAD">加拿大元 (CAD)</option>
+                            <option value="CNY">人民币 (CNY)</option>
+                            <option value="EUR">欧元 (EUR)</option>
+                            <option value="GBP">英镑 (GBP)</option>
+                            <option value="HKD">港元 (HKD)</option>
+                            <option value="JPY">日元 (JPY)</option>
+                            <option value="KRW">韩元 (KRW)</option>
+                            <option value="SGD">新加坡元 (SGD)</option>
+                            <option value="TWD">新台币 (TWD)</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-
-            <label>出价金额</label>
-            <input type="number" id="bidAmount" value=""> <!-- 默认空白 -->
-            
-            <button class="btn btn-primary" onclick="generateResult()">计算剩余价值</button>
-        </div>
-
-        <!-- 计算结果表格 -->
-        <div id="calcResult" class="result">
-            <h3>计算结果</h3>
-            <table class="result-table">
-                <tr>
-                    <th>交易日期：</th>
-                    <td id="resultDate">0000-00-00</td>
-                </tr>
-                <tr>
-                    <th>外币汇率：</th>
-                    <td id="resultForeignRate">0.00</td>
-                </tr>
-                <tr>
-                    <th>续费价格：</th>
-                    <td id="resultPrice">0.00 人民币/年</td>
-                </tr>
-                <tr>
-                    <th>剩余天数：</th>
-                    <td><span id="resultDays">0</span> 天 (于 <span id="resultExpiry">0000-00-00</span> 过期)</td>
-                </tr>
-                <tr>
-                    <th>剩余价值：</th>
-                    <td><span id="resultValue" class="result-value">0.000 元</span></td>
-                </tr>
-                <tr>
-                    <th>溢价金额：</th>
-                    <td><span id="premiumValue" class="result-value">0.000 元</span></td>
-                </tr>
-            </table>
-        </div>
-
-        <footer style="margin-top: 20px; text-align: center; font-size: 0.9rem; color: #333;">
-            本项目开源于 <a href="https://github.com/SolaireH3/calculator" target="_blank" class="custom-link">GitHub</a>
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="cycle"><i class="fas fa-redo"></i> 续费周期</label>
+                        <select id="cycle">
+                            <option value="1">月付</option>
+                            <option value="3">季付</option>
+                            <option value="6">半年付</option>
+                            <option value="12">年付</option>
+                            <option value="24">两年付</option>
+                            <option value="36">三年付</option>
+                            <option value="48">四年付</option>
+                            <option value="60">五年付</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bidAmount"><i class="fas fa-gavel"></i> 出价金额</label>
+                        <input type="number" id="bidAmount" step="0.01">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="expiryDate"><i class="fas fa-calendar-times"></i> 到期时间</label>
+                        <input type="text" id="expiryDate" placeholder="选择到期日期">
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionDate"><i class="fas fa-calendar-check"></i> 交易日期</label>
+                        <input type="text" id="transactionDate" placeholder="选择交易日期">
+                    </div>
+                </div>
+                <button id="calculateBtn"><i class="fas fa-calculator"></i> 计算剩余价值</button>
+            </section>
+            <section id="calcResult" class="result">
+                <h2><i class="fas fa-chart-bar"></i> 计算结果</h2>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-label"><i class="fas fa-calendar"></i> 交易日期</span>
+                        <span id="resultDate" class="result-value">0000-00-00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label"><i class="fas fa-exchange-alt"></i> 外币汇率</span>
+                        <span id="resultForeignRate" class="result-value">0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label"><i class="fas fa-tag"></i> 续费价格</span>
+                        <span id="resultPrice" class="result-value">0.00 人民币/年</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label"><i class="fas fa-hourglass-half"></i> 剩余天数</span>
+                        <span id="resultDays" class="result-value">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label"><i class="fas fa-calendar-alt"></i> 到期日期</span>
+                        <span id="resultExpiry" class="result-value">0000-00-00</span>
+                    </div>
+                    <div class="result-item highlight">
+                        <span class="result-label"><i class="fas fa-coins"></i> 剩余价值</span>
+                        <span id="resultValue" class="result-value">0.000 元</span>
+                    </div>
+                    <div class="result-item highlight">
+                        <span class="result-label"><i class="fas fa-chart-line"></i> 溢价金额</span>
+                        <span id="premiumValue" class="result-value">0.000 元</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>本项目开源于 <a href="https://github.com/SolaireH3/calculator" target="_blank"><i class="fab fa-github"></i>GitHub</a></p>
         </footer>
     </div>
-    <script src="./js/bg.js"></script>
-    <script src="./js/index.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,235 @@
+/* tomzhao.xyz - 剩余价值计算器样式 */
+:root {
+    --primary-color: #6c5ce7;
+    --secondary-color: #a29bfe;
+    --background-color: #f9f9f9;
+    --text-color: #2d3436;
+    --border-color: #dfe6e9;
+    --hover-color: #e6e9ef;
+    --result-color: #00b894;
+    --error-color: #d63031;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+header { text-align: center; margin-bottom: 3rem; }
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 i { margin-right: 0.5rem; }
+
+main { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+.calculator, .result {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.result { position: sticky; top: 2rem; height: fit-content; }
+
+.calculator:hover, .result:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    color: var(--text-color);
+}
+
+label i {
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+input, select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: var(--hover-color);
+    margin-bottom: 0.3rem;
+}
+
+input[type="text"]#expiryDate,
+input[type="text"]#transactionDate {
+    cursor: pointer;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+}
+
+.update-time {
+    font-size: 0.75rem;
+    color: #666;
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+}
+
+button {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+}
+
+button i { margin-right: 0.5rem; }
+
+.result h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.result h2 i { margin-right: 0.5rem; }
+
+.result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.result-item {
+    background-color: var(--hover-color);
+    padding: 1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.result-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.result-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.result-label i {
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+.result-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.highlight {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.highlight .result-label { color: rgba(255, 255, 255, 0.8); }
+.highlight .result-label i { color: white; }
+.highlight .result-value { color: white; font-size: 1.5rem; }
+
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+a i { margin-right: 0.3rem; }
+
+@media (max-width: 768px) {
+    main { grid-template-columns: 1fr; }
+    .result { position: static; margin-top: 2rem; }
+    .input-group { grid-template-columns: 1fr; }
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.notification.show { opacity: 1; }
+.notification.success { background-color: var(--result-color); }
+.notification.error { background-color: var(--error-color); }
+
+body::after {
+  content: "tomzhao.xyz";
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0.1;
+  font-size: 20px;
+  z-index: 1000;
+}
